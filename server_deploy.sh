@@ -16,12 +16,6 @@ composer install --no-interaction --prefer-dist --optimize-autoloader
     # Note: If you're using queue workers, this is the place to restart them.
     # ...
 
-    sudo chown -R $USER:www-data storage
-    sudo chown -R $USER:www-data bootstrap/cache
-
-    sudo chmod -R 775 storage
-    sudo chmod -R 775 bootstrap/cache
-
     # Clear cache
     php artisan cache:clear
     php artisan route:cache
@@ -29,6 +23,13 @@ composer install --no-interaction --prefer-dist --optimize-autoloader
 
     # Reload PHP to update opcache
     echo "" | sudo -S service php7.4-fpm reload
+
+    sudo chown -R $USER:www-data storage
+    sudo chown -R $USER:www-data bootstrap/cache
+
+    sudo chmod -R 775 storage
+    sudo chmod -R 775 bootstrap/cache
+
 # Exit maintenance mode
 php artisan up
 
