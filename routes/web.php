@@ -20,11 +20,10 @@ Auth::routes(['register'=>false]);
 Route::get('/', 'Auth\LoginController@showLoginForm');
 
 if(env('UNIT_TEST_CICD')==true){
-    $model = [];
-}else{
-    $model = DB::table('permissions')->where('type',0)->get();
+    return false;
 }
 
+$model = DB::table('permissions')->where('type',0)->get();
 // print_r($model);exit;
 foreach ($model as $row) {
     $params = $row->params ? '/'.$row->params : '';
