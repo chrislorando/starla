@@ -19,6 +19,10 @@ Auth::routes(['register'=>false]);
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
 
+if(!env('DB_CONNECTION')){
+    return false;
+}
+
 $model = DB::table('permissions')->where('type',0)->get();
 // print_r($model);exit;
 foreach ($model as $row) {
