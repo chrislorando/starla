@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 
@@ -29,7 +30,7 @@ class UserController extends Controller
         $search = $request->search;
         $model = User::paginate(15);
         if($search){
-            $model = User::where('name','like','%'.$request->search.'%')
+            $model = User::where('username','like','%'.$request->search.'%')
             ->orWhere('email','like','%'.$request->search.'%')
             ->paginate(10);
         }
@@ -46,7 +47,7 @@ class UserController extends Controller
         $search = $request->search;
         $model = User::onlyTrashed()->paginate(10);
         if($search){
-            $model = User::onlyTrashed()->where('name','like','%'.$request->search.'%')
+            $model = User::onlyTrashed()->where('username','like','%'.$request->search.'%')
             ->orWhere('email','like','%'.$request->search.'%')
             ->paginate(10);
         }
@@ -74,7 +75,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|alpha_num|max:255',
+            'username' => 'required|alpha_num|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
             // 'role_id' => 'required',
@@ -85,7 +86,7 @@ class UserController extends Controller
         $model = User::create(array_merge(
             $request->all(),
             [
-                'password'=>$password
+                'password'=>$password,
             ]
         ));
 
@@ -130,7 +131,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|alpha_num|max:255',
+            'username' => 'required|alpha_num|max:255',
             'email' => 'required|email|max:255|unique:users,email,'.$id,
             'password' => 'required|min:8|confirmed',
             // 'role_id' => 'required',
@@ -150,14 +151,20 @@ class UserController extends Controller
             $password = Hash::make($request->password);
         }
 
-        $save = $model->update(array_merge(
-            $request->all(),
-            [
-                'password'=>$password
-            ]
-        ));
+        $user->username = $request->username;
+        $user->password = $password;
+        $user->email = $request->email;
+        $user->role_id = $request->role_id;
 
-        if($save){
+        // $save = $model->update(array_merge(
+        //     $request->all(),
+        //     [
+        //         'password'=>$password,
+        //         // 'updated_by'=> Auth::user()->username
+        //     ]
+        // ));
+
+        if($user->save()){
             return redirect('/user')->with('success', 'Data saved succesfully.');
         }
 

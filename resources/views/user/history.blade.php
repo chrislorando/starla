@@ -39,9 +39,13 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Name</th>
+                                    <th scope="col">Username</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Updated By</th>
+                                    <th scope="col">Updated At</th>
                                     <th scope="col" class="text-nowrap text-center">Action</th>
                                 </tr>
                             </thead>
@@ -57,9 +61,13 @@
                                     @php($count = $model->firstItem() + $key)
                                     <tr>
                                         <th scope="row">{{ $count }}</th>
-                                        <td>{{ $r->name }}</td>
+                                        <td>{{ $r->username }}</td>
                                         <td>{{ $r->email }}</td>
                                         <td>{{ $r->role->name }}</td>
+                                        <td>{{ $r->created_by }}</td>
+                                        <td>{{ $r->created_at }}</td>
+                                        <td>{{ $r->updated_by }}</td>
+                                        <td>{{ $r->updated_at }}</td>
                                         <td class="text-nowrap text-center">
                                             <form action="{{ url('/user/recover', ['id' => $r->id]) }}" method="post">
                                                 <button class="btn btn-success btn-sm" type="submit">
