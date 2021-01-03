@@ -21,44 +21,44 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 
 if(env('UNIT_TEST_CICD')==true){
     return false;
+}else{
+    $model = DB::table('permissions')->where('type',0)->get();
+    // print_r($model);exit;
+    foreach ($model as $row) {
+        $params = $row->params ? '/'.$row->params : '';
+        if($row->name){
+            if($row->method=='get'){
+                Route::get($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
+            }else if($row->method=='post'){
+                if($row->alias){
+                    Route::post($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
+                }else{
+                    Route::post($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
+                }
+            }else if($row->method=='put'){
+                if($row->alias){
+                    Route::put($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
+                }else{
+                    Route::put($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
+                }
+            }else if($row->method=='delete'){
+                if($row->alias){
+                    Route::delete($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
+                }else{
+                    Route::delete($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
+                }
+            }else if($row->method=='patch'){
+                if($row->alias){
+                    Route::patch($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
+                }else{
+                    Route::patch($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
+                }
+            }
+        }  
+    }
 }
 
-$model = DB::table('permissions')->where('type',0)->get();
-// print_r($model);exit;
-foreach ($model as $row) {
-    $params = $row->params ? '/'.$row->params : '';
-    if($row->name){
-        if($row->method=='get'){
-            Route::get($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
-        }else if($row->method=='post'){
-            if($row->alias){
-                Route::post($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
-            }else{
-                Route::post($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
-            }
-        }else if($row->method=='put'){
-            if($row->alias){
-                Route::put($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
-            }else{
-                Route::put($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
-            }
-        }else if($row->method=='delete'){
-            if($row->alias){
-                Route::delete($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
-            }else{
-                Route::delete($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
-            }
-        }else if($row->method=='patch'){
-            if($row->alias){
-                Route::patch($row->name.$params, $row->controller.'Controller@'.$row->action)->name($row->alias)->middleware('can:'.$row->name);
-            }else{
-                Route::patch($row->name.$params, $row->controller.'Controller@'.$row->action)->middleware('can:'.$row->name);
-            }
-        }
-    }
-  
-    
-}
+
 
 // Route::get('/permission/generate', 'PermissionController@generate');
 
