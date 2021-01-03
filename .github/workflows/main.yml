@@ -31,4 +31,4 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         host: ${{ secrets.SSH_HOST }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: 'cd /var/www/alchris.web.id/public_html && ./server_deploy.sh'
+        script: 'cd /var/www/alchris.web.id && ./server_deploy.sh'
