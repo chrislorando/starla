@@ -19,7 +19,7 @@ Auth::routes(['register'=>false]);
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
 
-if(env('UNIT_TEST')===true){
+if(env('UNIT_TEST_CICD')==true){
     return false;
 }
 
