@@ -19,11 +19,7 @@ Auth::routes(['register'=>false]);
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
 
-if(!env('UNIT_TEST')){
-    //if true don't execute the query routes
-    if(env('UNIT_TEST')==true){
-        return false;
-    }
+if(env('UNIT_TEST')==true){
     return false;
 }
 

@@ -17,6 +17,8 @@ composer install --no-interaction --prefer-dist --optimize-autoloader
     # ...
 
     # Clear cache
+    php artisan cache:clear
+    php artisan route:cache
     php artisan optimize
 
     # Reload PHP to update opcache
