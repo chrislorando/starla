@@ -16,6 +16,12 @@ composer install --no-interaction --prefer-dist --optimize-autoloader
     # Note: If you're using queue workers, this is the place to restart them.
     # ...
 
+    sudo chown -R $USER:www-data storage
+    sudo chown -R $USER:www-data bootstrap/cache
+
+    sudo chmod -R 775 storage
+    sudo chmod -R 775 bootstrap/cache
+
     # Clear cache
     php artisan cache:clear
     php artisan route:cache
